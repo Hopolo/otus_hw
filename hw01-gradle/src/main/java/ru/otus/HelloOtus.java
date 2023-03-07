@@ -4,21 +4,18 @@
 package ru.otus;
 
 import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * To start the application:
  * ./gradlew build
- * java -jar ./L01-gradle/build/libs/gradleHelloWorld-0.1.jar
+ * java -jar ./hw01-gradle/build/libs/gradleHelloWorld-0.1.jar
  * <p>
  * To unzip the jar:
- * unzip -l L01-gradle.jar
+ * unzip -l hw01-gradle.jar
  * unzip -l gradleHelloWorld-0.1.jar
  */
-@Slf4j
 public class HelloOtus {
 
     public static void main(String... args) {
