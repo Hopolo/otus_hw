@@ -1,6 +1,7 @@
 rootProject.name = "otus_hw"
-include ("hw01-gradle")
-
+include("hw01-gradle")
+include("hw03-test-framework")
+include("hw06-autologging")
 
 pluginManagement {
     val johnrengelmanShadow: String by settings
@@ -9,4 +10,3 @@ pluginManagement {
         id("com.github.johnrengelman.shadow") version johnrengelmanShadow
     }
 }
-include("hw03-test-framework")
