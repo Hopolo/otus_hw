@@ -37,7 +37,7 @@ public class Ioc {
         ) throws Throwable {
             Method clazMethod = AutoLogger.class.getDeclaredMethod(method.getName(), method.getParameterTypes());
             if (clazMethod.getAnnotationsByType(Log.class).length > 0) {
-                System.out.println("method: " + clazMethod.getName() + "(), params: " + Arrays.toString(args));
+                System.out.println("method: " + clazMethod.getName() + "(), params: " + (args == null ? "None" : Arrays.toString(args)));
             }
             return method.invoke(autoLogger, args);
         }
