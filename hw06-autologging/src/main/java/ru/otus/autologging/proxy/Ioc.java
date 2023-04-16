@@ -1,6 +1,5 @@
 package ru.otus.autologging.proxy;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,40 +7,41 @@ import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import ru.otus.autologging.AutoLoggerInterface;
+import java.util.Optional;
 import ru.otus.autologging.annotations.Log;
 
 public class Ioc {
     private Ioc() {
     }
 
-    public static AutoLoggerInterface newInstance(
+    public static Object newInstance(
         Class<?> clazz,
-        Class<?>[] argsTypes,
         Object[] args
     ) {
         Object obj;
+        var argsTypes = Arrays.stream(args).map(Object::getClass).toArray(Class<?>[]::new);
         try {
-            Constructor<?> constructor = clazz.getConstructor(argsTypes);
+            var constructor = clazz.getConstructor(argsTypes);
             obj = constructor.newInstance(args);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException("Can't create object", e);
         }
-        InvocationHandler handler = new AutologgingInvocationHandler((AutoLoggerInterface) obj, clazz);
-        return (AutoLoggerInterface) Proxy.newProxyInstance(
+        var interfazeClass = Optional.ofNullable(clazz.getInterfaces()).filter(interfazes -> interfazes.length > 0).get()[0];
+        InvocationHandler handler = new AutologgingInvocationHandler(obj, clazz);
+        return Proxy.newProxyInstance(
             Ioc.class.getClassLoader(),
-            new Class<?>[] {AutoLoggerInterface.class},
+            new Class<?>[] {interfazeClass},
             handler
         );
     }
 
     static class AutologgingInvocationHandler implements InvocationHandler {
 
-        private final AutoLoggerInterface autoLogger;
+        private final Object autoLogger;
         private final List<Method> methodsForAutoLogger = new ArrayList<>();
 
         AutologgingInvocationHandler(
-            AutoLoggerInterface autoLogger,
+            Object autoLogger,
             Class<?> clazz
         ) {
             methodsForAutoLogger.addAll(Arrays.stream(clazz.getDeclaredMethods())
