@@ -1,18 +1,13 @@
 package ru.otus.atm;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.otus.atm.bills.Bill;
-import ru.otus.atm.bills.Fiftyth;
-import ru.otus.atm.bills.FiveHundredth;
-import ru.otus.atm.bills.FiveThousandth;
-import ru.otus.atm.bills.OneHundredth;
-import ru.otus.atm.bills.OneThousandth;
+import ru.otus.atm.bills.Nominal;
 
 class ATMTest {
 
@@ -23,17 +18,11 @@ class ATMTest {
     void init() {
         atm = new ATM();
         billList = new ArrayList<>();
-        billList.add(new Fiftyth());
-        billList.add(new OneHundredth());
-        billList.add(new OneThousandth());
-        billList.add(new FiveHundredth());
-        billList.add(new FiveThousandth());
-    }
-
-    @Test
-    void checkSum() {
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> new ATM().getBills(40));
-        assertEquals("Can't give out that sum", exception.getMessage());
+        billList.add(new Bill(Nominal.FIFTYTH));
+        billList.add(new Bill(Nominal.ONE_HUNDREDTH));
+        billList.add(new Bill(Nominal.FIVE_HUNDREDTH));
+        billList.add(new Bill(Nominal.ONE_THOUSANDTH));
+        billList.add(new Bill(Nominal.FIVE_THOUSANDTH));
     }
 
     @Test

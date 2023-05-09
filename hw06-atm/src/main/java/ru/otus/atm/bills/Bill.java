@@ -1,25 +1,24 @@
 package ru.otus.atm.bills;
 
-import java.util.List;
 import java.util.Random;
-import ru.otus.atm.BillCell;
 
-public abstract class Bill {
+public class Bill {
 
-    protected int id;
+    private final int id;
+    private final Nominal nominal;
 
-    Bill() {
+    public Bill(Nominal nominal) {
         var random = new Random();
         id = random.nextInt(99999999);
+        this.nominal = nominal;
     }
 
-    public void depositBill(List<BillCell<? extends Bill>> cells) {
-        cells.stream()
-            .filter(billCell -> billCell.getBillType().equals(this.getClass()))
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("Can't find bill type"))
-            .deposit(this);
+    public Nominal nominal() {
+        return nominal;
     }
 
-    public abstract int value();
+    public int getId() {
+        return id;
+    }
 }
+
